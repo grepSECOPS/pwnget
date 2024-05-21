@@ -12,8 +12,21 @@ update_and_install() {
     SOFTWARE_PACKAGES=(
         git
         curl
-        vim
-        htop
+        nvim
+        nano
+        btop
+        tmux
+        terminator
+        tldr
+        thefuck
+        golang
+        wireshark
+        tcpdump
+        siege
+        parrot-tools-full
+        openvpn
+
+
         # Add any other packages you want to install here
     )
 
