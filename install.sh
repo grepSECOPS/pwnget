@@ -1,43 +1,42 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status.
-set -e
+# Function to update and install packages
+update_and_install() {
+    echo "Updating package list..."
+    sudo apt-get update
 
-# Update the package list
-echo "Updating package list..."
-sudo apt-get update
+    echo "Upgrading installed packages..."
+    sudo apt-get upgrade -y
 
-# Upgrade all installed packages to their latest versions
-echo "Upgrading installed packages..."
-sudo apt dist-upgrade -y
+    echo "Installing specified software packages..."
+    SOFTWARE_PACKAGES=(
+        git
+        curl
+        vim
+        htop
+        # Add any other packages you want to install here
+    )
 
-# Install specified software packages
-echo "Installing specified software packages..."
-SOFTWARE_PACKAGES=(
-    gh
-    git
-    curl
-    nvim
-    btop
-    tldr
-    thefuck
-    w3m
-    golang
-    python3
-    golang
-    zsh
+    for package in "${SOFTWARE_PACKAGES[@]}"; do
+        sudo apt-get install -y "$package"
+    done
 
-    # Add any other packages you want to install here
-)
+    echo "Cleaning up unnecessary packages..."
+    sudo apt-get autoremove -y
+    sudo apt-get clean
 
-for package in "${SOFTWARE_PACKAGES[@]}"; do
-    sudo apt-get install -y "$package"
-done
+    echo "System update and software installation completed successfully!"
+}
 
-# Clean up any unnecessary packages
-echo "Cleaning up unnecessary packages..."
-sudo apt-get autoremove -y
-sudo apt-get clean
-
-echo "System update and software installation completed successfully!"
+# Check the current shell
+if [[ "$SHELL" == */bash ]]; then
+    echo "Running in bash shell"
+    update_and_install
+elif [[ "$SHELL" == */zsh ]]; then
+    echo "Running in zsh shell"
+    update_and_install
+else
+    echo "Unsupported shell: $SHELL"
+    exit 1
+fi
 
